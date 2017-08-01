@@ -1,0 +1,16 @@
+<h1>My Blog</h1>
+<%= link_to "New Question", new_question_path %>
+<hr />
+<% @questions.each do |question| %>
+  <h1><%= link_to question.title, question %></h1>
+
+  <p>
+    <%= markdown(question.body) %>
+  </p>
+  <h5>Published <%= time_ago_in_words question.created_at %> ago</h5>
+
+  <% if question != @questions.last %>
+  <hr />
+  <% end %>
+<% end %>
+<%= paginate @questions %>
