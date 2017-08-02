@@ -6,3 +6,23 @@
 </p>
 <h4>Published <%= time_ago_in_words @question.created_at %> ago</h4>
 <%= link_to "Back to Index", questions_path %>
+
+<h2>Answers</h2>
+<% @question.answers.each do |answer| %>
+  <p>
+    <strong>answer:</strong>
+    <%= answer.body %>
+    <p>Published <%= time_ago_in_words answer.created_at %> ago</p>
+  </p> 
+<% end %>
+
+<h2>Add a answer:</h2>
+<%= form_for([@question, @question.answers.build]) do |f| %>
+  <p>
+    <%= f.label :body %><br>
+    <%= f.text_area :body %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

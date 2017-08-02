@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
     before_action :question_find, only: [:show, :destroy, :edit]
+    before_action :authorize, except: [:show, :index]
     def index
     @questions = Question.all.page params[:page]
     end
