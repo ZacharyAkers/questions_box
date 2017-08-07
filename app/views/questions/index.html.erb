@@ -1,5 +1,5 @@
-<h1>My Blog</h1>
-<%= link_to "New Question", new_question_path %>
+<h1>Questions Box</h1>
+<%= link_to "Create New Question", new_question_path %>
 <hr />
 <% @questions.each do |question| %>
   <h1><%= link_to question.title, question %></h1>
@@ -8,7 +8,10 @@
     <%= markdown(question.body) %>
   </p>
   <h5>Published <%= time_ago_in_words question.created_at %> ago</h5>
-
+  <% if current_user && question.user_id === current_user.id %>
+  <%= link_to "Delete", question, method: :delete %>
+  <%= link_to "Edit",  edit_question_path(question) %>
+  <% end  %>
   <% if question != @questions.last %>
   <hr />
   <% end %>

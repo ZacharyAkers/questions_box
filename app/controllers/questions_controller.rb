@@ -1,36 +1,49 @@
 class QuestionsController < ApplicationController
-    before_action :question_find, only: [:show, :destroy, :edit]
-    before_action :authorize, except: [:show, :index]
-    def index
+  before_action :question_find, only: [:show, :destroy, :edit, :update]
+  before_action :authorize, except: [:index, :show]
+  def index
     @questions = Question.all.page params[:page]
-    end
+  end
 
-    def new
-        @question = Question.new
-    end
+  def new
+    @question = Question.new
+  end
 
-    def create
-        @question = Question.new(questions_params)
-        @question.user_id = current_user.id
-        if @question.save
-            redirect_to questions_path(@question)
-        else
-            redirect_to new_question_path
-        end
+  def create
+    @question = Question.new(questions_params)
+    @question.user_id = current_user.id
+    if @question.save
+      redirect_to questions_path
+    else
+      redirect_to new_questions_path
     end
+  end
 
-    def edit
-        @question
-    end
+  def edit
+    @question
+  end
 
-    def show
-        @question
+  def update
+    @question.update(questions_params)
+    if @question.save
+      redirect_to questions_path
+    else
+      redirect_to new_questions_path
     end
+  end
 
-    def destroy
-        @question = Question.delete
-    end
-  private 
+  def show
+    @question
+  end
+
+  def destroy
+    @question = Question.find(params[:id])
+    @question.delete
+    redirect_to questions_path
+  end
+
+  private
+
   def questions_params
     params.require(:question).permit(:title, :body)
   end
@@ -38,4 +51,5 @@ class QuestionsController < ApplicationController
   def question_find
     @question = Question.find(params[:id])
   end
+
 end
